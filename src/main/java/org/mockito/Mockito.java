@@ -10,6 +10,7 @@ import org.mockito.internal.debugging.MockitoDebuggerImpl;
 import org.mockito.internal.stubbing.answers.*;
 import org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValues;
 import org.mockito.internal.stubbing.defaultanswers.ReturnsMoreEmptyValues;
+import org.mockito.internal.stubbing.defaultanswers.ThrowsExceptions;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.mock.SerializableMode;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -66,6 +67,7 @@ import org.mockito.junit.*;
  *      <a href="#32">33. (new) Mockito JUnit rule (Since 1.10.17)</a><br/>
  *      <a href="#34">34. (new) Switch <em>on</em> or <em>off</em> plugins (Since 1.10.15)</a><br/>
  *      <a href="#35">35. (new) Custom verification failure message (Since 2.0.0)</a><br/>
+ *      <a href="#36">36. (new) Dummy objects (Since 2.0.31)</a><br/>
  * </b>
  *
  * <h3 id="0">0. <a class="meaningful_link" href="#verification">Migrating to 2.0</a></h3>
@@ -1094,6 +1096,14 @@ import org.mockito.junit.*;
  * verify(mock, times(2).description("someMethod should be called twice")).someMethod();
  * </code></pre>
  *
+ * <h3 id="36">36. <a class="meaningful_link" href="#BDD_behavior_verification">Dummy objects</a> (Since 2.0.31)</h3>
+ * <p>You can create dummy objects. According to Gerard Meszaros a dummy object
+ * is only passed as a parameter but never used. A dummy object created by
+ * <pre>AnyType dummy = Mockito.dummy(AnyType.class)</pre>
+ * throws an exception whenever one of its methods is called. Thus it is easy to
+ * discover dummies that are not used as dummies, which means that an
+ * expectation about the system under test is wrong.
+ *
  * TODO rework the documentation, write about hamcrest.
  *
  */
@@ -1375,6 +1385,18 @@ public class Mockito extends Matchers {
      */
     public static <T> T mock(Class<T> classToMock, MockSettings mockSettings) {
         return MOCKITO_CORE.mock(classToMock, mockSettings);
+    }
+
+    /**
+     * Creates a dummy for the specified type.
+     * <p>
+     * According to Meszaros a dummy is a test double that is only passed around but never used. Mockito's dummy throws
+     * an exception whenever one of its methods is called.
+     * @param type class or interface of the dummy
+     * @return dummy object
+     */
+    public static <T> T dummy(Class<T> type) {
+        return mock(type, new ThrowsExceptions());
     }
 
     /**

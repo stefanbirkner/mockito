@@ -97,6 +97,7 @@ import java.lang.annotation.Target;
  * It may troublesome for code that rely on the spy to have these annotations.</p>
  *
  * @see Mockito#spy(Object)
+ * @see Dummy
  * @see Mock
  * @see InjectMocks
  * @see MockitoAnnotations#initMocks(Object)

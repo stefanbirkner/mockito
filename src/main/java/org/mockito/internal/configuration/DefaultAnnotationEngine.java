@@ -5,6 +5,7 @@
 package org.mockito.internal.configuration;
 
 import org.mockito.Captor;
+import org.mockito.Dummy;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.configuration.AnnotationEngine;
@@ -18,7 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Initializes fields annotated with &#64;{@link org.mockito.Mock} or &#64;{@link org.mockito.Captor}.
+ * Initializes fields annotated with &#64;{@link org.mockito.Mock}, &#64;{@link org.mockito.Captor}
+ * or &#64;{@link org.mockito.Dummy}.
  *
  * <p>
  * The {@link #process(Class, Object)} method implementation <strong>does not</strong> process super classes!
@@ -30,6 +32,7 @@ public class DefaultAnnotationEngine implements AnnotationEngine {
     private final Map<Class<? extends Annotation>, FieldAnnotationProcessor<?>> annotationProcessorMap = new HashMap<Class<? extends Annotation>, FieldAnnotationProcessor<?>>();
 
     public DefaultAnnotationEngine() {
+        registerAnnotationProcessor(Dummy.class, new DummyAnnotationProcessor());
         registerAnnotationProcessor(Mock.class, new MockAnnotationProcessor());
         registerAnnotationProcessor(MockitoAnnotations.Mock.class, new MockitoAnnotationsMockAnnotationProcessor());
         registerAnnotationProcessor(Captor.class, new CaptorAnnotationProcessor());

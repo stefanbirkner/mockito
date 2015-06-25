@@ -13,6 +13,7 @@ import org.mockitoutil.TestBase;
 
 import java.util.List;
 
+import static org.mockito.Mockito.dummy;
 import static org.mockito.Mockito.times;
 
 @SuppressWarnings("unchecked")
@@ -65,6 +66,16 @@ public class MockitoTest extends TestBase {
         //then
         assertEquals(Mockito.RETURNS_DEFAULTS, settings.getDefaultAnswer());
     }
-    
+
+    interface FooInterface {
+        void fooMethod();
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldFailIfDummyIsUsed() {
+        FooInterface dummyFoo = dummy(FooInterface.class);
+        dummyFoo.fooMethod();
+    }
+
     //TODO: stack filter does not work very well when it comes to threads?
 }

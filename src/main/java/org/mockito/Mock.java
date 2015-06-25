@@ -53,6 +53,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </p>
  *
  * @see Mockito#mock(Class)
+ * @see Dummy
  * @see Spy
  * @see InjectMocks
  * @see MockitoAnnotations#initMocks(Object)
